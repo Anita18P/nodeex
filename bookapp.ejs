@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment</title>
+    <link rel="stylesheet" href="/css/bookapp.css" type="text/css"/>
+</head>
+<body>
+    <div class="container">
+    <header>
+        <h1>Booking Appointment</h1>
+    </header>
+    <main  class="main1">
+        <form  class="book" onsubmit="userDetails(event)">
+            <div class="name1">
+               
+                <label for="name" class="labels">User Name</label>
+                <input type="text" id="Name" name="Name" class="inputs">
+            </div>
+            <div class="phone1">
+                <label for="Phone" class="labels">Phone Number</label>
+                <input type="tel" id="Phone" name="Phone" class="inputs">
+            </div>
+            <div class="email1">
+                <label for="Email" class="labels">Email Id</label>
+                <input type="email" id="Email" name="Email" class="inputs">
+
+            </div>
+            <button  type="submit" id="sbtn">Submit</button>
+        </form>
+     </main>
+     
+</div>
+<div class="appointments">
+    <ul class="uls" id="ullist">
+
+    </ul>
+ </div>
+    
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+<!-- <script src="../app.js"></script> -->
+<script>
+    function userDetails(event){
+        event.preventDefault();
+        console.log('we are in userDetails onclick function');
+        const Name=event.target.Name.value;
+        const Phone=event.target.Phone.value;
+        const Email=event.target.Email.value;
+         const obj={
+            Name,
+            Phone,
+            Email
+         };
+         console.log(obj);
+         axios.post('http://localhost:4000/admin/add-user',obj)
+         .then(response=>{
+            console.log('axios post');
+            console.log(response);
+            showUserOnScreen(response.data.newUserDetails);
+            
+
+         });
+
+
+    }
+    window.addEventListener('DOMContentLoaded',()=>{
+        // console.log("we are in windows loader");
+        // console.log('hello');
+        axios.get('http://localhost:4000/admin/get-user')
+        .then((response)=>{
+            console.log('in window loader axios get');
+            console.log(response.data.alluser);
+            for(var i=0;i<response.data.alluser.length;i++){
+                showUserOnScreen(response.data.alluser[i]);
+            }
+           
+        }).catch(err=>{
+            console.log(err);
+            console.log('axios error window get');
+        }
+            );
+    });
+     function showUserOnScreen(users){
+        document.getElementById('Name').value="";
+        document.getElementById('Phone').value="";
+        document.getElementById('Email').value="";
+        const uL=document.getElementById('ullist');
+        const newLi=document.createElement('li');
+        const dltbtn=document.createElement('button');
+        dltbtn.textContent='DELETE';
+        dltbtn.id='delete';
+        const editbtn=document.createElement('button');
+        editbtn.textContent='EDIT';
+        editbtn.id='edit';
+        dltbtn.addEventListener('click',(event)=>{
+            console.log('in delete functionality');
+           console.log('object sent to router');
+            console.log(users);
+            
+            axios.delete(`http://localhost:4000/admin/delete/${users.id}`)
+            .then(response=>{
+                console.log('in delete axios then');
+                console.log(response);
+                uL.removeChild(event.target.parentElement);
+                console.log('child deleted from uL');
+            }).catch(err=>console.log(err));
+
+        });
+
+        newLi.textContent=`${users.name} ${users.phone} ${users.email}` ;
+        newLi.appendChild(dltbtn);    
+        newLi.appendChild(editbtn);    
+        uL.appendChild(newLi);
+       
+    
+    
+    };
+</script>
+</html>

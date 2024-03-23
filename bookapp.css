@@ -1,0 +1,50 @@
+.container{
+    padding:10px;
+    margin-top:-50px;
+    margin-left:-100px;
+    top:20%;
+    position:fixed;
+    left:50%;
+    align-items: center;
+    background-color: rgb(209, 243, 243);
+    border:1px solid black;
+    border-radius: 8px;
+    
+}
+.labels{
+    display:block;
+}
+.main1{
+    display: block;
+    align-items: centre;
+    margin:2px;
+    padding:1px;
+
+}
+.inputs{
+    border:1px solid black;
+    border-radius:4px;
+    margin: 3px;
+    padding:5px;
+    width:90%;
+}
+#sbtn{
+    background-color: rgb(237, 186, 234);
+    border:1px solid rgb(12, 21, 97);
+    border-radius: 4px;
+    margin:5px;
+    padding:2px;
+    
+}
+.appointments{
+    top:70%;
+    position:fixed;
+    left:20%;
+    width:90%;
+    background-color: rgb(130, 197, 197);
+    border:1px solid black;
+    border-radius:3px;
+}
+li{
+    list-style-type: none;
+}

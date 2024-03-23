@@ -1,26 +1,29 @@
-const path = require('path');
-
-const express = require('express');
-const bodyParser = require('body-parser');
+const p1=require('path');
+const express=require('express');
+const cors=require('cors');
+const bodyParser=require('body-parser');
 const sequelize=require('./util/database');
-const errorController = require('./controllers/error');
 
-const app = express();
-
+const app=express();
+// app.use(cors);
 app.set('view engine', 'ejs');
-app.set('views', 'views');
+app.set('views', './views');
 
 const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
-
-app.use(errorController.get404);
-sequelize.sync().then((result)=>{
+app.use(bodyParser.json({ extended: false }));
+app.use(express.static(p1.join(__dirname,'public')));
+   console.log('before route');
+ app.use('/admin',adminRoutes);
+ console.log('after route');
+sequelize.sync().then(result=>{
     console.log(result);
-}).catch(err=>console.log(err));
-app.listen(3000);
+console.log('sequel response');
+    app.listen(4000);
+    console.log('after listeninng');
+
+})
+.catch(err=>{
+    console.log(err);
+    console.log('sequel error');
+});
+
