@@ -1,15 +1,12 @@
 const express = require('express');
-const bookApps = require('../models/apdetails');
+const bookApps = require('../models/expenseDetails');
 const router=express.Router();
 const admincontrollers=require('../controllers/adminc');
 
-router.get('/',admincontrollers.getPage);
+router.get('/get-expense',admincontrollers.getExpenseDetails);
 
-router.get('/get-user',admincontrollers.getDetails);
+router.post('/add-expense',admincontrollers.postExpenseDetails);
 
-router.post('/add-user',admincontrollers.postDetails);
-
-router.delete('/delete/:id',admincontrollers.deleteDetails);
-
+router.delete('/delete-expense/:id',admincontrollers.deleteExpenseDetails);
+router.put('/edit-expense',admincontrollers.editExpenseDetails);
 module.exports = router;
-
