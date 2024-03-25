@@ -1,27 +1,54 @@
-const express=require('express');
-const path1=require('path');
-const bodyParser=require('body-parser');
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
 const sequelize=require('./util/database');
-const cors=require('cors');
-const app=express();
-app.use(cors());
+const errorController = require('./controllers/error');
+const Product=require('./models/product');
+const User=require('./models/user');
+
+const app = express();
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
 const adminRoutes = require('./routes/admin');
-app.use(bodyParser.json({ extended: false }));
-app.use(express.static(path1.join(__dirname,'/public')));
-   console.log('before route');
- app.use('/admin',adminRoutes);
- console.log('after route');
-sequelize.sync().then(result=>{
-    console.log(result);
-console.log('sequel response');
+const shopRoutes = require('./routes/shop');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req,res,next)=>{
+    User.findByPk(1).then(user=>{
+        req.user=user;
+        next();
+    })
+    .catch(err=>console.log(err));
+})
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
+
+Product.belongsTo(User,{constrains:true,onDelete:"CASCADE"});
+User.hasMany(Product);
+
+
+sequelize
+// .sync({force:true})
+.sync()
+.then((result)=>{
+   return User.findByPk(1);
+    // console.log(result);
+}).then(user=>{
+    if(!user){
+      return  User.create({name:"Anita",email:"anita@gmail.com"})
+    }
+    //return Promise.resolve(user);
+    return user;
+}).then(user=>{
+    console.log(user);
     app.listen(3000);
-    console.log('after listeninng');
 
 })
-.catch(err=>{
-    console.log(err);
-    console.log('sequel error');
-});
-
+.catch(err=>console.log(err));
