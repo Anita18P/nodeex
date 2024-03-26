@@ -1,0 +1,71 @@
+div{
+    display:inline;
+}
+.post{
+
+    top:10%;
+    position:fixed;
+    left:5%;
+    background-color: aquamarine;
+    width:auto;
+    /* margin:10px; */
+    padding:10px;
+    
+}
+label{
+    display:block;
+}
+input{
+    position:relative;
+    width:100%;
+    border:1px solid black;
+    border-radius: 3px;
+    
+}
+textarea{
+    border:1px solid black;
+    border-radius:3px;
+}
+#sbtbtn{
+    display:block;
+    border:1px solid black;
+    border-radius:3px;
+    cursor: auto;
+}
+#sbtbtn:hover{
+    background-color: rgb(65, 150, 122);
+
+}
+/* div .post{
+    display:inline;
+} */
+div#newdiv {
+    position:absolute;
+    background-color: black;
+    width:500px;
+    top:10%;
+    left:40%;
+}
+
+li{
+    background-color: black;
+    list-style-type: none;
+    color:white;
+    width:200px;
+}
+button.plus {
+    position:relative;
+    background-color: black;
+    color:white;
+    left:20px;
+    display:inline;
+
+   
+}
+button.commentbtn{
+    position:relative;
+    background-color: rgb(251, 248, 248);
+    color:rgb(6, 5, 5);
+    left:20px;
+
+}
