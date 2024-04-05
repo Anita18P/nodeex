@@ -1,5 +1,5 @@
 const Sequelize=require('sequelize');
-const sequelize=new Sequelize('mysqllearn','root','Anita@18041994',{ 
+const sequelize=new Sequelize(,{ 
     dialect:'mysql',
     host:'localhost',
 });
