@@ -20,7 +20,6 @@ input{
     width:100%;
     border:1px solid black;
     border-radius: 3px;
-    
 }
 textarea{
     border:1px solid black;
@@ -39,33 +38,91 @@ textarea{
 /* div .post{
     display:inline;
 } */
-div#newdiv {
+#newdiv {
     position:absolute;
-    background-color: black;
-    width:500px;
+    width:700px;
     top:10%;
     left:40%;
+    margin:10px;
+    padding :10px
+}
+#uList{
+    list-style-type: none;
 }
 
-li{
+.blogList{
+    position:relative;
     background-color: black;
     list-style-type: none;
     color:white;
-    width:200px;
+    width:500px;
+    margin:20px;
+    padding:10px;
+  
 }
+#text.blogList{
+    font-style: italic;
+} 
 button.plus {
-    position:relative;
+    position:absolute;
     background-color: black;
     color:white;
-    left:20px;
+    left:90%;
     display:inline;
+    color:red;
+    font-weight:1000;
+
 
    
+}
+.blogList1{
+    position:relative;
+    background-color: black;
+    list-style-type: none;
+    color:white;
+    width:500px;
+    margin:20px;
+    padding:10px;
+}
+
+
+.commentsection{
+    white-space:nowrap;
+}
+p{
+    position:relative;
+    left:8px;
+        width: 420px; /* Set a width for the wrapping container */
+        overflow-wrap: break-word; /* Break long words */
+      
+}
+.cinput{
+    position:relative;
+    left:2px;
+    display: inline-block;
+    width:90%;
+    border:1px solid black;
+    border-radius: 3px;
 }
 button.commentbtn{
     position:relative;
     background-color: rgb(251, 248, 248);
     color:rgb(6, 5, 5);
-    left:20px;
+    left:0px;
+    display:inline-block;
+    border:none;
+
+}
+ li.comments{
+    border-bottom:1px solid white;
+    
+} 
+button.delete-btn{
+    position:relative;    
+    background-color: rgb(8, 8, 8);
+    color:red;
+    left:0px;
+    display:block;
+    border:none;
 
 }
