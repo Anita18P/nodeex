@@ -1,13 +1,15 @@
 const express = require('express');
-const bookApps = require('../models/blogDetails');
+const attendance= require('../models/calender');
 const router=express.Router();
 const admincontrollers=require('../controllers/adminc');
 
-router.get('/get-blog',admincontrollers.getBlogDetails);
+router.get('/attendance-Summary',admincontrollers.attendanceSummary);
+router.get('/:date',admincontrollers.getAttendancePage);
+ router.post('/add-attendance',admincontrollers.postAttendance);
 
-router.post('/add-blog',admincontrollers.postBlogDetails);
-router.post('/add-comment',admincontrollers.postComments);
-router.get('/get-comments/:id',admincontrollers.getComments);
-router.delete('/delete-comment/:id',admincontrollers.deleteComment);
+// router.post('/add-user',admincontrollers.postDetails);
+
+// router.delete('/delete/:id',admincontrollers.deleteDetails);
 
 module.exports = router;
+

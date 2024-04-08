@@ -1,5 +1,12 @@
 {
-  "name": "fs-booking-appointment-application",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "moment": "^2.30.1",
+    "mysql2": "^3.9.3",
+    "sequelize": "^6.37.1"
+  },
+  "name": "attendance-marker-project",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -8,12 +15,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "ejs": "^3.1.9",
-    "express": "^4.19.1",
-    "mysql2": "^3.9.2",
-    "sequelize": "^6.37.1"
-  },
   "description": ""
 }
