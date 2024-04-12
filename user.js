@@ -18,6 +18,7 @@ exports.postUserDetails=async (req,res,next)=>{
        res.status(200).json({userData:data});
 }catch(error){
     console.log(error);
+res.status(403).json(error);
 }
     
 }
