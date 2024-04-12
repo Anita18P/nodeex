@@ -6,14 +6,12 @@ const sequelize=require('./util/database');
 
 const app=express();
 app.use(cors());
-app.set('view engine', 'ejs');
-app.set('views', './views');
 
-const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/User');
 app.use(bodyParser.json({ extended: false }));
 app.use(express.static(p1.join(__dirname,'public')));
    console.log('before route');
- app.use('/admin',adminRoutes);
+ app.use(adminRoutes);
  console.log('after route');
 sequelize.sync({force:false}).then(result=>{
     console.log(result);
