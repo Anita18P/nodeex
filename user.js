@@ -37,7 +37,7 @@ exports.userLogin=async (req,res,next)=>{
         
     })
     if(!user){
-        res.status(404).json({message:"user does not exist you have to register",success:false});
+        res.status(404).json({message:"user does not exist ",success:false});
     }
      const userPass=await User.findOne({
         where:{
@@ -52,10 +52,10 @@ exports.userLogin=async (req,res,next)=>{
 
      })
      if(!userPass){
-        res.status(404).json({message:"wrong Password",success:false});
+        res.status(401).json({message:"user Not Authorised",success:false});
      }
 
-    res.status(201).json({message:"user Logged in",success:true});
+    res.status(201).json({message:"user Logged in Successfully",success:true});
 
 }catch(error){
     console.log(error);
