@@ -1,4 +1,6 @@
 const User=require('../models/User');
+const sequelize = require('../util/database');
+const {Sequelize,Op}=require('sequelize');
  
 exports.postUserDetails=async (req,res,next)=>{
     console.log("in postUserDetails");
@@ -21,4 +23,42 @@ exports.postUserDetails=async (req,res,next)=>{
 res.status(403).json(error);
 }
     
+};
+exports.userLogin=async (req,res,next)=>{
+    console.log('userLogin function');
+   try{ 
+    const Email=req.body.Email;
+    const Password=req.body.Password;
+    const user=await User.findOne({
+        where:{
+            Email:Email
+        }
+        
+        
+    })
+    if(!user){
+        res.status(404).json({message:"user does not exist you have to register",success:false});
+    }
+     const userPass=await User.findOne({
+        where:{
+            Email:Email,
+            where:Sequelize.where(Sequelize.fn('BINARY', Sequelize.col('Password')),
+            {
+                [Op.eq]:Password,
+            })
+                
+            
+        }
+
+     })
+     if(!userPass){
+        res.status(404).json({message:"wrong Password",success:false});
+     }
+
+    res.status(201).json({message:"user Logged in",success:true});
+
+}catch(error){
+    console.log(error);
+    
+}
 }
