@@ -3,6 +3,8 @@ const express=require('express');
 const cors=require('cors');
 const bodyParser=require('body-parser');
 const sequelize=require('./util/database');
+const User=require('./models/User');
+const Expenses=require('./models/expense');
 
 const app=express();
 app.use(cors());
@@ -13,6 +15,11 @@ app.use(express.static(p1.join(__dirname,'public')));
    console.log('before route');
  app.use(adminRoutes);
  console.log('after route');
+ 
+ User.hasMany(Expenses);
+ Expenses.belongsTo(User);
+
+
 sequelize.sync({force:false}).then(result=>{
     console.log(result);
 console.log('sequel response');

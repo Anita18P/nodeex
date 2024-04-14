@@ -2,6 +2,7 @@ const User=require('../models/User');
 const sequelize = require('../util/database');
 const {Sequelize,Op}=require('sequelize');
 const bcrypt=require('bcryptjs');
+const jwt=require('jsonwebtoken');
  
 exports.postUserDetails=async (req,res,next)=>{
     console.log("in postUserDetails");
@@ -34,6 +35,9 @@ res.status(403).json({message:error,success:false});
 }
     
 };
+function generateAccessToken(id){
+    return jwt.sign({userId:id},'secretKey');
+}
 exports.userLogin=async (req,res,next)=>{
     console.log('userLogin function');
    try{ 
@@ -59,7 +63,7 @@ exports.userLogin=async (req,res,next)=>{
         }
         if(result===true){
             console.log("result");
-           return res.status(201).json({message:"user Logged in Successfully",success:true});
+           return res.status(201).json({message:"user Logged in Successfully",success:true,token:generateAccessToken(user[0].id)});
         }
         else{
            return res.status(401).json({message:"user Not Authorised",success:false});
