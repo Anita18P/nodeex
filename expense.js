@@ -16,6 +16,7 @@ exports.addExpenses=async(req,res,next)=>{
         Description:description,
         Category:expensecat,
         UserDetailId:req.user.id,
+        
     });
     console.log(data);
     res.status(201).json({newExpenseDetails:data});
@@ -35,7 +36,7 @@ exports.getExpenses=async(req,res,next)=>{
     //     userDetailId:req.user.id
     // }
     // })
-        res.status(200).json({allExpense:expenses});
+        res.status(200).json({allExpense:expenses,isPremiumuser:req.user.isPremiumuser});
      }catch(err){console.log(err)};
    
 };
@@ -47,17 +48,21 @@ exports.deleteExpense=async(req,res,next)=>{
     console.log('req.body.UserDetailId');
     console.log(req.body);
   
-    if(req.user.id===req.body.UserDetailId){
-        await expenseApp.destroy({
+   
+     try{   const data=await expenseApp.destroy({
             where:{
-                id:id
+                id:id,
+                UserDetailId:req.user.id
             }
         }); 
-        res.sendStatus(200);
+        if(data===0){
+            return res.status(500).json({message:"expense does not belong to the user",success:false})
+        }
+       return res.sendStatus(200).json({message:"deleted successfully",success:true});
+
+    }catch(error){
+       return  res.status(400).json({message:"unauthorised user",success:false})
 
     }
-    else{
-        res.status(400).json({message:"unauthorised user",success:false})
-    }
-   
+  
 }
