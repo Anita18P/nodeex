@@ -7,16 +7,9 @@ exports.getUserLeaderBoard= async(req,res,next)=>{
  try{
     console.log("I am in getUserLeaderBoard");
     const leaderboardofuser= await User.findAll({
-        attributes:['id','Name',[sequelize.fn('sum',sequelize.col('expensedetails.Amount')),'total_cost']],
-        include:[
-            {   model:expenseApp,
-                attributes:[],
-              
-            }   
-           
-        ],
-        group:['expensedetails.UserDetailId'],
-        order:[['total_cost','DESC']]
+        attributes:['id','Name','total_Expenses'],
+        group:['UserDetails.id'],
+        order:[['total_Expenses','DESC']]
     });
     console.log('leaderboardofuser');
     console.log(leaderboardofuser);
