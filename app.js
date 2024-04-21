@@ -6,6 +6,7 @@ const sequelize=require('./util/database');
 const User=require('./models/User');
 const Expenses=require('./models/expense');
 const order=require('./models/order');
+const Forgotpassword=require('./models/forgotpassword')
 
 const app=express();
 app.use(cors());
@@ -13,12 +14,20 @@ app.use(cors());
 const adminRoutes = require('./routes/User');
 const expenseRoutes = require('./routes/expense');
 const purchaseRoutes=require('./routes/purchase');
-app.use(bodyParser.json({ extended: false }));
+const premiumRoutes=require('./routes/premiumFeatures');
+const passwordRoutes=require('./routes/forgotPassword');
+
+
+
+
+app.use(bodyParser.json());
 app.use(express.static(p1.join(__dirname,'public')));
    console.log('before route');
  app.use(adminRoutes);
  app.use(expenseRoutes);
  app.use(purchaseRoutes);
+ app.use(premiumRoutes);
+ app.use(passwordRoutes);
 
  console.log('after route');
  
@@ -27,6 +36,9 @@ app.use(express.static(p1.join(__dirname,'public')));
 
  User.hasMany(order);
  order.belongsTo(User);
+ 
+ User.hasMany(Forgotpassword);
+ Forgotpassword.belongsTo(User);
 
 
 
