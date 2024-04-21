@@ -26,7 +26,7 @@
     <div id="expenses">
         <h4 id="membership"></h4>
         <button id="rzp-button1">Buy Premium</button>
-        
+        <button onclick="download()" id="downloadexpense">Download File</button>
         <ul id="expenseList">
 
         </ul>
@@ -125,7 +125,7 @@
             }
            
              
-        }).catch(err=>console.log(err));
+        }).catch(err=>showError(err));
     });
     function removeExpense(eventclick,expense){
         console.log(expense);
@@ -139,8 +139,30 @@
             const expenseul=document.getElementById('expenseList');
             expenseul.removeChild(eventclick.target.parentElement);
             
-        }).catch(err=>console.log(err));
+        }).catch(err=>showError(err));
     }
+    function showError(err){
+    document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
+}
+    function download(){
+    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    .then((response) => {
+        if(response.status === 201){
+            //the bcakend is essentially sending a download link
+            //  which if we open in browser, the file would download
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
+        } else {
+            throw new Error(response.data.message)
+        }
+
+    })
+    .catch((err) => {
+        showError(err)
+    });
+}
     document.getElementById("rzp-button1")
     .onclick=async function (e){
         const token=localStorage.getItem('token');
@@ -189,7 +211,7 @@
             leaderboardElem.innerHTML="";
             leaderboardElem.innerHTML+=`<h1>LeaderBoard<h1>`;
                 userLeaderBoardArray.data.forEach((userDetails) => {
-                    leaderboardElem.innerHTML+=`<li>Name-${userDetails.name} Total Expenses-${userDetails.total_cost||0}`;
+                    leaderboardElem.innerHTML+=`<li>Name-${userDetails.Name} Total Expenses-${userDetails.total_Expenses||0}`;
                 });
             
             }
