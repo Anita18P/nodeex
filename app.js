@@ -6,7 +6,9 @@ const sequelize=require('./util/database');
 const User=require('./models/User');
 const Expenses=require('./models/expense');
 const order=require('./models/order');
-const Forgotpassword=require('./models/forgotpassword')
+const Forgotpassword=require('./models/forgotpassword');
+const FilesDownloaded=require('./models/filesDownloaded');
+
 
 const app=express();
 app.use(cors());
@@ -39,10 +41,12 @@ app.use(express.static(p1.join(__dirname,'public')));
  
  User.hasMany(Forgotpassword);
  Forgotpassword.belongsTo(User);
+ 
+ User.hasMany(FilesDownloaded);
+ FilesDownloaded.belongsTo(User);
 
 
-
-sequelize.sync({force:false}).then(result=>{
+sequelize.sync({force:false}).then((result)=>{
     console.log(result);
 console.log('sequel response');
     app.listen(3000,()=>{
@@ -52,7 +56,7 @@ console.log('sequel response');
     console.log('after listeninng');
 
 })
-.catch(err=>{
+.catch((/** @type {any} */ err)=>{
     console.log(err);
     console.log('sequel error');
 });
