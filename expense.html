@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/public/css/expense.css">
 </head>
 <body>
     <div class="container">
@@ -23,17 +24,37 @@
          <button type="submit" id="sBtn">Add Expense</button>
         </form>
     </div>
-    <div id="expenses">
+    <div id="expensePage">
         <h4 id="membership"></h4>
         <button id="rzp-button1">Buy Premium</button>
-        <button onclick="download()" id="downloadexpense">Download File</button>
+        <button onclick="download()"  id="downloadexpense">Download File</button>
+        <div id="expenses">
         <ul id="expenseList">
 
         </ul>
+        <div id="pagination-container">
+        <button type="button" id="previous-btn">previous</button>
+        <span id="page-num"></span>
+        <button type="button"id="next-btn">next</button>
+        <select name="row-per-page" id="rows-per-page">
+            <option value="0">row-per-page</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+        </select>
+        </div>
+      
+       
+    </div>
 
         <div id="leaderboard">
 
         </div>
+        <div id="files">
+
+        </div>
+        
         
 
         
@@ -42,10 +63,21 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        const token=localStorage.getItem('token');
+        const nextButton = document.getElementById('next-btn');
+        const prevButton = document.getElementById('previous-btn');
+        const pageNum = document.getElementById('page-num');
+        const expensesList = document.getElementById('expenses');
+        const pagination = document.getElementById('pagination-container');
+        const rowsPerPageOption = document.getElementById('rows-per-page');
+        let currentPage = 1;
+        let totalPages;
+        console.log(currentPage);
+        let  rowsPerPage = 3;
+        console.log(rowsPerPage);
         function handleSubmit(event){
-         
-            event.preventDefault();
-            const token=localStorage.getItem('token');
+           event.preventDefault();
+           
             const amount=event.target.expAmount.value;
             const description=event.target.expDesc.value;
             const expensecat=event.target.expcategory.value;
@@ -74,7 +106,7 @@
             document.getElementById('expcategory').value="";
         }
     
-        function showExpenseDetails(expense){
+        function showExpenseDetails(expense,currentPage,totalPages){
             const expenseul=document.getElementById('expenseList');
             const newLi=document.createElement('li');
             newLi.textContent=`${expense.Amount}- ${expense.Description}- ${expense.Category}`;
@@ -88,10 +120,15 @@
            
             newLi.appendChild(dltbtn);   
             expenseul.appendChild(newLi); 
+            const pageNum = document.getElementById('page-num');
+            pageNum.textContent = `Page ${currentPage} of ${totalPages}`;
+            currentPage = expense.currentPage;
+            pagination.style.display = 'flex';
     }
     function  showPremiumuserMessage(){
         document.getElementById('rzp-button1').remove();
         document.getElementById('membership').innerHTML="You are a Premium-User";
+        
         showLeaderBoard();
         
     
@@ -106,30 +143,51 @@
     return JSON.parse(jsonPayload);
 }
     window.addEventListener('DOMContentLoaded',()=>{
-        const token=localStorage.getItem('token');
-        console.log(token);
+         console.log("window content loader");
+         console.log(token);
+         const rowsPerPage=localStorage.getItem('rowsPerPage')
         const decodeToken=parseJwt(token);
         console.log(decodeToken);
         if(decodeToken.isPremiumuser){
             showPremiumuserMessage();
+            showAllDownloadedFiles();
         }
-        axios.get("http://localhost:3000/expense/get-expense",{
+        const page=1;
+        axios.get(`http://localhost:3000/expense/get-expense?page=${page}&limit=${rowsPerPage}`,{
             headers:{
                 "Authorization":token
             }
         })
         .then(response=>{
+            console.log('response of get function');
             console.log(response);
             for(var i=0;i<response.data.allExpense.length;i++){
-                showExpenseDetails(response.data.allExpense[i]);
+                const currentp=response.data.currentPage;
+                totalPages=response.data.totalPages;
+                showExpenseDetails(response.data.allExpense[i],currentp,totalPages);
+                
             }
+            if (currentPage === 1) {
+                prevButton.disabled = true;
+            } else {
+                prevButton.disabled = false;
+            }
+
+            if (currentPage === totalPages) {
+                nextButton.disabled = true;
+                rowsPerPageOption.disabled = true;
+            } else {
+                nextButton.disabled = false;
+                rowsPerPageOption.disabled = false;
+            }
+
            
              
         }).catch(err=>showError(err));
     });
     function removeExpense(eventclick,expense){
         console.log(expense);
-        const token=localStorage.getItem('token');
+     
         axios.delete(`http://localhost:3000/expense/delete-expenses/${expense.id}`, {headers:{
                 "Authorization":token
         },data:expense
@@ -144,14 +202,46 @@
     function showError(err){
     document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
 }
+    function suggestPremiumMembership(){
+        const Message="You are not a premium user to Download file you should buy premium Membership "
+        document.body.innerHTML += `<div style="color:red;"> ${Message}</div>`
+     }
+     function  showAllDownloadedFiles(){
+        console.log('in showallDowloaded files')
+        axios.get("http://localhost:3000/expense/getfiles", { headers: {"Authorization" : token}})
+        .then(response=>{
+            console.log('response of get files');
+            console.log(response);
+            for(var i=0;i<response.data.filesData.length;i++){
+                const onDate=response.data.filesData[i].createdAt.split("T");
+                     console.log(onDate);
+
+                    const filesDiv=document.getElementById('files');
+                    filesDiv.innerHTML+=`<div><a href="${response.data.filesData[i].url}">file Downloaded on ${onDate[0]}</a></div>`
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+     }
+    
+
+ 
     function download(){
-    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+        const decodeToken=parseJwt(token);
+        console.log(decodeToken);
+        if(!decodeToken.isPremiumuser){
+            suggestPremiumMembership();
+        }
+        else{
+    axios.get('http://localhost:3000/expense/download', { headers: {"Authorization" : token} })
     .then((response) => {
         if(response.status === 201){
             //the bcakend is essentially sending a download link
             //  which if we open in browser, the file would download
+            console.log('response.data.fileURl');
+            console.log(response.data.fileURl);
             var a = document.createElement("a");
-            a.href = response.data.fileUrl;
+            a.href = response.data.fileURl.Location;
             a.download = 'myexpense.csv';
             a.click();
         } else {
@@ -163,9 +253,10 @@
         showError(err)
     });
 }
+}
     document.getElementById("rzp-button1")
     .onclick=async function (e){
-        const token=localStorage.getItem('token');
+      
         const response=await axios.get('http://localhost:3000/purchase/premiummembership',
     {
         headers:{"Authorization":token}
@@ -200,7 +291,7 @@
         inputElement.type="button";
         inputElement.value='show LeaderBoard';
         inputElement.onclick=async ()=>{
-            const token=localStorage.getItem('token');
+         
             const userLeaderBoardArray= await axios.get("http://localhost:3000/premium/showLeaderBoard",{
                 headers:{
                     "Authorization":token
@@ -217,6 +308,66 @@
             }
             document.getElementById('membership').appendChild(inputElement);
         }
+nextButton.addEventListener('click', () => {
+    console.log('before',currentPage);
+    currentPage += 1;
+    console.log('after',currentPage);
+    console.log('in next button eventListener currenPage value',currentPage);
+    fetchExpenses(currentPage);
+});
+
+prevButton.addEventListener('click', () => {
+    console.log('before',currentPage);
+    currentPage -= 1;
+    console.log('after',currentPage);
+    console.log('in pre button eventListener currenPage value',currentPage);
+
+    fetchExpenses(currentPage);
+});
+
+rowsPerPageOption.addEventListener('change', () => {
+    rowsPerPage = parseInt(rowsPerPageOption.value);
+    localStorage.setItem('rowsPerPage', rowsPerPage);
+    fetchExpenses(currentPage);
+})
+
+// Function to fetch expenses for a specific page
+function fetchExpenses(page) {
+    const token = localStorage.getItem('token');
+    axios.get(`http://localhost:3000/expense/get-expense?page=${page}&limit=${rowsPerPage}`, {
+            headers: { Authorization: token },
+        })
+        .then((response) => {
+            console.log('response of fetch',response);
+            expenseList.innerHTML = '';
+            for(var i=0;i<response.data.allExpense.length;i++){
+                const currentp=response.data.currentPage;
+                const totalp=response.data.totalPages;
+                showExpenseDetails(response.data.allExpense[i], currentp,totalp)
+            }
+
+            const totalPages = response.data.totalPages;
+            currentPage = response.data.currentPage;
+
+            if (currentPage === 1) {
+                prevButton.disabled = true;
+            } else {
+                prevButton.disabled = false;
+            }
+
+            if (currentPage === totalPages) {
+                nextButton.disabled = true;
+                rowsPerPageOption.disabled = true;
+            } else {
+                nextButton.disabled = false;
+                rowsPerPageOption.disabled = false;
+            }
+
+            const pageNum = document.getElementById('page-num');
+            pageNum.textContent = `Page ${currentPage} of ${totalPages}`;
+        })
+        .catch((error) => console.log(error));
+}
         
     
    
