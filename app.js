@@ -1,4 +1,5 @@
-const p1=require('path');
+const path=require('path');
+const fs=require('fs');
 const express=require('express');
 const cors=require('cors');
 const bodyParser=require('body-parser');
@@ -8,7 +9,9 @@ const Expenses=require('./models/expense');
 const order=require('./models/order');
 const Forgotpassword=require('./models/forgotpassword');
 const FilesDownloaded=require('./models/filesDownloaded');
-
+const helmet=require('helmet');
+const compression=require('compression');
+var morgan=require('morgan');
 
 const app=express();
 app.use(cors());
@@ -19,19 +22,27 @@ const purchaseRoutes=require('./routes/purchase');
 const premiumRoutes=require('./routes/premiumFeatures');
 const passwordRoutes=require('./routes/forgotPassword');
 
+var accessLogstream=fs.createWriteStream(path.join(__dirname,'access.log'),
+ {flags:'a'}
+);
 
 
+
+ app.use(helmet());
+ app.use(compression());
+ app.use(morgan('combined',{stream:accessLogstream}));
+ 
 
 app.use(bodyParser.json());
-app.use(express.static(p1.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'public')));
    console.log('before route');
  app.use(adminRoutes);
  app.use(expenseRoutes);
  app.use(purchaseRoutes);
  app.use(premiumRoutes);
  app.use(passwordRoutes);
+ 
 
- console.log('after route');
  
  User.hasMany(Expenses);
  Expenses.belongsTo(User);
@@ -47,16 +58,13 @@ app.use(express.static(p1.join(__dirname,'public')));
 
 
 sequelize.sync({force:false}).then((result)=>{
-    console.log(result);
-console.log('sequel response');
-    app.listen(3000,()=>{
+    app.listen(process.env.PORT ||3000,()=>{
         console.log("app listening at 3000");
         console.log("***********************");
     });
-    console.log('after listeninng');
 
 })
-.catch((/** @type {any} */ err)=>{
+.catch((err)=>{
     console.log(err);
     console.log('sequel error');
 });
