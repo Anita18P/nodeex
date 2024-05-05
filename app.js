@@ -25,8 +25,8 @@ const expenseRoutes = require('./routes/expense');
 const purchaseRoutes=require('./routes/purchase');
 const premiumRoutes=require('./routes/premiumFeatures');
 const passwordRoutes=require('./routes/forgotPassword');
-const privateKey=fs.readFileSync('server.key');
-const certificate=fs.readFileSync('server.cert');
+// const privateKey=fs.readFileSync('server.key');
+// const certificate=fs.readFileSync('server.cert');
 
 var accessLogstream=fs.createWriteStream(path.join(__dirname,'access.log'),
  {flags:'a'}
