@@ -1,0 +1,21 @@
+.container{
+    background-color:aquamarine;
+    border:1px solid rgb(2, 88, 60);
+    border-radius:5px;
+    width:200px;
+   height:fit-content;
+}
+#name{
+    display: block;
+}
+#email{
+    display: block;
+}
+#password{
+    display: block;
+}
+#msg{
+    color:red;
+}
+
+

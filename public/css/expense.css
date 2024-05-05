@@ -1,0 +1,117 @@
+#expenses{
+    background-color:rgb(250, 153, 213);
+    /* border:1px solid rgb(244, 67, 176);
+    border-radius: 3px; */
+}
+body{
+    background-color: bisque;
+}
+#navbar{
+    background-color: bisque;;
+}
+#expense-form{
+    background-color: rgb(199, 172, 225);
+    width:fit-content;
+    height:fit-content;
+    border:2px solid rgb(171, 108, 198);
+    border-radius:20px;
+    margin:30px;
+    padding:6px;
+
+}
+#leaderboard{
+    position:relative;
+    margin:10px;
+    padding:40px;
+    left:15px;
+    width:400px;
+    height: fit-content;
+ 
+    
+    
+    
+}
+#files{
+    position:raltive;
+    left:15px;
+    margin:10px;
+    padding:18px;
+
+}
+input{
+    display:block;
+    width:250px;
+    height:30px;
+    border:1px solid black;
+    border-radius:6px;
+}
+select#expcategory{
+    display:block;
+    width:255px;
+    height:30px;
+    border:1px solid black;
+    border-radius:6px;
+}
+#sBtn{
+    margin-top:10px;
+    padding:5px;
+    background-color: rgb(230, 175, 235);
+    color:black;
+    border:1px solid black;
+    border-radius:4px;
+
+}
+#sBtn:hover{
+    background-color:rgb(171, 108, 198) ;
+    color:white;
+}
+#leaderBoardButton{
+    position:relative;
+    margin:10px;
+    padding: 5px;;
+    background-color:rgb(228, 163, 78);
+    display:inline;
+    height:30px;
+    width:150px;
+    font-size: 15px;
+}
+#rzp-button1{
+    position:absolute; 
+    margin:5px;
+    padding:5px;
+    background-color:rgb(252, 122, 122);
+    left:40px;
+    border:1px solid rgb(65, 34, 34);
+    border-radius:3px;
+}
+#downloadexpense{
+    position:relative; 
+    margin:5px;
+    padding:5px;
+    background-color:rgb(240, 87, 212);
+    border:1px solid black;
+    border-radius:3px;
+    left:28px;
+}
+#rzp-button1:hover{
+    background-color:brown;
+    color:white;
+    font-size: 15px;
+}
+#downloadexpense:hover{
+    background-color:rgb(81, 15, 64);
+    color:white;
+    font-size: 15px;
+}
+#expenses{
+    position: absolute;
+    width:fit-content;
+    height:fit-content;
+    left:50%;
+    top:20%;
+}
+li{
+    position:relative;
+    list-style-type:none;
+    left:-20px;
+}

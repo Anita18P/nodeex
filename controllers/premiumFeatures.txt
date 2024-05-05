@@ -1,0 +1,64 @@
+const expenseApp=require('../models/expense');
+const User=require('../models/User');
+
+const sequelize = require('../util/database');
+
+
+exports.getUserLeaderBoard= async(req,res,next)=>{
+ try{
+    console.log("in leader board function")
+    const users= await User.findAll();
+    console.log("userDAta")
+    console.log(users);
+    const expenses= await expenseApp.findAll();
+    console.log("expense data");
+    console.log(expenses);
+    const userAggregatedExpenses={};
+    expenses.forEach(expense => {
+        if(userAggregatedExpenses[expense.UserDetailId]){
+            userAggregatedExpenses[expense.UserDetailId]+=expense.Amount;
+        }else{
+            userAggregatedExpenses[expense.UserDetailId]=expense.Amount;
+        }
+        
+    });
+    console.log("userAggregatedExpenses");
+    console.log(userAggregatedExpenses);
+    var userLeaderBoardDetails=[];
+    users.forEach((user)=>{
+        userLeaderBoardDetails.push({name:user.Name ,total_cost:userAggregatedExpenses[user.id]||0})
+    })
+    console.log("userLeaderBoardDetails");
+    console.log(userLeaderBoardDetails);
+    userLeaderBoardDetails.sort((a,b)=>b.total_cost-a.total_cost);
+    console.log(userLeaderBoardDetails);
+    res.status(200).json(userLeaderBoardDetails);
+ }catch(error){
+    res.status(500).json(error);
+ }
+ //another way
+ 
+exports.getUserLeaderBoard= async(req,res,next)=>{
+ try{
+    console.log("I am in getUserLeaderBoard");
+    const leaderboardofuser= await User.findAll({
+        attributes:['id','Name',[sequelize.fn('sum',sequelize.col('expensedetails.Amount')),'total_cost']],
+        include:[
+            {   model:expenseApp,
+                attributes:[],
+              
+            }   
+           
+        ],
+        group:['expensedetails.UserDetailId'],
+        order:[['total_cost','DESC']]
+    });
+    console.log('leaderboardofuser');
+    console.log(leaderboardofuser);
+      res.status(200).json(leaderboardofuser);
+    
+}catch(error){
+    console.log(error);
+    res.status(500).json(error);
+}
+};
