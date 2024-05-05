@@ -2,8 +2,8 @@ const { Json } = require('sequelize/lib/utils');
 const expenseApp=require('../models/expense');
 const sequelize = require('../util/database');
 const AWS=require('aws-sdk');
-const userServices=require('../services/UserServices');
-const s3Services=require('../services/S3services');
+//const userServices=require('../services/UserServices');
+//const s3Services=require('../services/S3services');
 const filesDownloaded=require('../models/filesDownloaded');
 
 exports.getfiles=async(req,res)=>{
