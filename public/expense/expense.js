@@ -17,7 +17,7 @@ function handleSubmit(event){
     const obj={Amount:amount,Description:description,ExpenseCategory:expensecat}
     console.log(obj);
 axios
-.post('http://localhost:3000/expense/add-expense',obj,
+.post('http://35.172.192.240:3000/expense/add-expense',obj,
 {headers:{"Authorization":token}})
 .then(response=>{console.log(response);
      console.log("response of post");
@@ -81,7 +81,7 @@ fetchExpenses(currentPage);
 });
 function DeleteExpense(eventclick,expense){
 console.log('in remove expense foll is expense obj');
-axios.delete(`http://localhost:3000/expense/delete-expenses/${expense.id}`, {headers:{
+axios.delete(`http://35.172.192.240:3000/expense/delete-expenses/${expense.id}`, {headers:{
         "Authorization":token
 },data:expense
     })
@@ -108,7 +108,7 @@ document.body.innerHTML += `<div style="color:red;"> ${Message}</div>`
 //show downloaded files on page
 function  showAllDownloadedFiles(){
 console.log('in showallDowloaded files')
-axios.get("http://localhost:3000/expense/getfiles", { headers: {"Authorization" : token}})
+axios.get("http://35.172.192.240:3000/expense/getfiles", { headers: {"Authorization" : token}})
 .then(response=>{
     for(var i=0;i<response.data.filesData.length;i++){
         const onDate=response.data.filesData[i].createdAt.split("T");
@@ -132,7 +132,7 @@ if(!decodeToken.isPremiumuser){
 }
 else{
      console.log('I am not working');
-// axios.get('http://localhost:3000/expense/download', { headers: {"Authorization" : token} })
+// axios.get('http://35.172.192.240:3000/expense/download', { headers: {"Authorization" : token} })
 // .then((response) => {
 // if(response.status === 201){
 //     // the backend is essentially sending a download link
@@ -154,7 +154,7 @@ else{
 document.getElementById("rzp-button1")
 .onclick=async function (e){
 
-const response=await axios.get('http://localhost:3000/purchase/premiummembership',
+const response=await axios.get('http://35.172.192.240:3000/purchase/premiummembership',
 {
 headers:{"Authorization":token}
 });
@@ -162,7 +162,7 @@ console.log(response);
 var options={"key":response.data.key_id,
         "order_id":response.data.order.id,
          "handler":async function(response){
-             await axios.post("http://localhost:3000/purchase/updateTransactionStatus",{
+             await axios.post("http://35.172.192.240:3000/purchase/updateTransactionStatus",{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
              },{
@@ -189,7 +189,7 @@ inputElement.value='show LeaderBoard';
 inputElement.id="leaderBoardButton";
 inputElement.onclick=async ()=>{
  
-    const userLeaderBoardArray= await axios.get("http://localhost:3000/premium/showLeaderBoard",{
+    const userLeaderBoardArray= await axios.get("http://35.172.192.240:3000/premium/showLeaderBoard",{
         headers:{
             "Authorization":token
         }
@@ -226,7 +226,7 @@ fetchExpenses(currentPage);
 // Function to fetch expenses for a specific page
 function fetchExpenses(page) {
 const token = localStorage.getItem('token');
-axios.get(`http://localhost:3000/expense/get-expense?page=${page}&limit=${rowsPerPage}`, {
+axios.get(`http://35.172.192.240:3000/expense/get-expense?page=${page}&limit=${rowsPerPage}`, {
     headers: { Authorization: token },
 })
 .then((response) => {

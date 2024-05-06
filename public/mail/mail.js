@@ -3,7 +3,7 @@ function handleSubmit(event){
     console.log("in mail handle submit function")
     const Email=event.target.Email.value;
 
-    axios.post("http://localhost:3000/password/forgotpassword",{data:Email})
+    axios.post("http://35.172.192.240:3000/password/forgotpassword",{data:Email})
     .then(response=>{
         console.log("response from forgot passwod api")
         console.log(response);

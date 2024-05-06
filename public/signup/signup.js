@@ -11,7 +11,7 @@ function handleSubmit(event){
         Email:Email,
         Password:Password,
     }
-    axios.post("http://localhost:3000/sign-up",userDetails)
+    axios.post("http://35.172.192.240:3000/sign-up",userDetails)
     .then(response=>{
         console.log(response);
         window.location.replace('../login/login.html');
