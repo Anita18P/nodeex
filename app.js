@@ -12,9 +12,8 @@ const Expenses=require('./models/expense');
 const order=require('./models/order');
 const Forgotpassword=require('./models/forgotpassword');
 const FilesDownloaded=require('./models/filesDownloaded');
-const helmet=require('helmet');
-const compression=require('compression');
-var morgan=require('morgan');
+ 
+
 
 
 const app=express();
@@ -31,11 +30,9 @@ const certificate=fs.readFileSync('server.cert');
 var accessLogstream=fs.createWriteStream(path.join(__dirname,'access.log'),
  {flags:'a'}
 );
- app.use(helmet());
- app.use(compression());
- app.use(morgan('combined',{stream:accessLogstream}));
- 
 
+
+ 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')));
    console.log('before route');
@@ -44,6 +41,11 @@ app.use(express.static(path.join(__dirname,'public')));
  app.use(purchaseRoutes);
  app.use(premiumRoutes);
  app.use(passwordRoutes);
+ app.use((req,res)=>{
+    console.log("foll is url");
+    console.log('url',req.url);
+    res.sendFile(path.join(__dirname,`public/${req.url}`));
+ })
  
 
  
