@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname,'public')));
  app.use(premiumRoutes);
  app.use(passwordRoutes);
  app.use((req,res)=>{
-    console.log("foll is url");
+    console.log("foll is urlss");
     console.log('url',req.url);
     res.sendFile(path.join(__dirname,`public/${req.url}`));
  })
