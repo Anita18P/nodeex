@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging chat App/sign page</title>
+    <link rel="stylesheet" href="../public/signup.css">
+</head>
+<body>
+    <div class="container">
+        <form onsubmit="handleSubmit(event)" autocomplete="on">
+                <label class="form-label" for="name">Enter Your Name</label>
+                <input class="form-control-sm"type="text" id="name"name="Name" required>
+                <label class="form-label" for="name">Enter Your Email</label>
+                <input class="form-control-sm" type="email" id="email" name="Email"  required>
+                <label class="form-label" for="name">Enter Your Phone-Number </label>
+                <input class="form-control-sm" type="tel" id="phone" name="Phone"  required>
+                <label class="form-label" for="password">Enter Password</label>
+                <input class="form-control-sm" type="password" id="password" name="Password"  required>
+                <button type="submit" id="sBtn">Sign Up</button>
+        </form>
+        <a href="../Login/login.html">Existing User-Login</a>
+        <div id="msg"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="signup.js"></script>
+    </div>
+
+    
+</body>
+</html>
