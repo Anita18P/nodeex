@@ -2,7 +2,7 @@ const User=require('../models/users');
 const sequelize = require('../util/database');
 const {Sequelize,Op}=require('sequelize');
 const bcrypt=require('bcryptjs');
-//const jwt=require('jsonwebtoken');
+const jwt=require('jsonwebtoken');
  
 exports.postUserDetails=async (req,res,next)=>{
     console.log(req.body);
@@ -42,4 +42,40 @@ exports.postUserDetails=async (req,res,next)=>{
     res.status(403).json({message:error,success:false});
 }
     
+};
+function generateAccessToken(id,name,isPremiumuser){
+    return jwt.sign({userId:id,name:name,isPremiumuser:isPremiumuser},'secretKey');
+}
+exports.userLogin=async (req,res,next)=>{
+   try{ 
+    console.log(req.body);
+    const Email=req.body.Email;
+    const Password=req.body.Password;
+    const user=await User.findAll({
+        where:{
+            Email:Email
+        }
+    })
+    console.log(user);
+    if(user.length>0){
+        bcrypt.compare(Password,user[0].Password,(err,result)=>{
+         if(err){
+            console.log("while decrypting");
+           throw new Error("Something went wrong");
+        }
+        if(result===true){
+           return res.status(201).json({message:"user Logged in Successfully",success:true,token:generateAccessToken(user[0].id,user[0].Name,user[0].PhoneNumber)});
+        }
+        else{
+           return res.status(401).json({message:"user Not Authorised",success:false});
+          }
+       })
+    }else{
+       return res.status(404).json({message:"user does not exist ",success:false});
+    }
+
+}catch(error){
+    console.log(error);
+    res.status(500).json({message:error,success:false});
+  }
 };
