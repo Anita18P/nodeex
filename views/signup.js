@@ -14,4 +14,12 @@ function handleSubmit(event){
         Password:Password,
     }
     console.log(userDetails);
+    axios.post("http://localhost:3000/sign-up",userDetails)
+    .then(response=>{
+        console.log(response);
+        alert(`${response.data.message}`);
+    })
+    .catch(error=>{
+        console.log(error);
+    })
 }
