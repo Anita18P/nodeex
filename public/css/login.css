@@ -1,0 +1,49 @@
+body{
+    background-color: rgb(250, 208, 208);
+}
+div.container{
+    background-color: rgb(156, 243, 243);
+    
+    border:1px solid black;
+    border-radius: 6px;
+    position:absolute;
+    top:20%;
+    left:5%;
+    margin:6px;
+    padding:8px;
+    width:fit-content;
+    height:fit-content;
+    
+}
+label{
+    display:block;
+}
+input{
+    display:block;
+    width:300px;
+    height:40px;
+}
+#loginBtn{
+    position:relative;
+    top:10px;
+    margin:5px;
+    padding:5px;
+    left:-2px;
+   
+}
+#signupspan{
+    font-size: larger;
+    position:relative;
+    margin:5px;
+    padding:5px;
+    top:10px;
+    left:-5px;
+}
+#signUpBtn{
+    position:relative;
+    margin:5px;
+    padding:5px;
+    top:10px;
+    left:-2px;
+
+}
