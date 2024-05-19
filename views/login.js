@@ -10,7 +10,9 @@ function handleSubmit(event){
     axios.post("http://localhost:3000/user-login",userDetails)
     .then(response=>{
         console.log(response);
-        alert(`${response.data.message}`);
+        localStorage.setItem("token",response.data.token);
+        //alert(`${response.data.message}`);
+        window.location.href='../views/chatapp.html';
     }).catch(error=>{
         console.log(error);
     });

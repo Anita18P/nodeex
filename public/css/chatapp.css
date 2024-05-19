@@ -1,0 +1,45 @@
+#header{
+    position:absolute;
+    left:40%;
+
+}
+.main{
+    position:absolute;
+    top:10%;
+    left:20%;
+    width:700px;
+}
+footer{
+    position:absolute;
+    top:92%;
+    margin:-5px;
+}
+.message{
+    
+    background-color: rgb(47, 77, 162);
+    width:1200px;
+    height:45px;
+    top:90%;
+    left:-10px;
+    border-radius:5px;
+    /* align-items: center; */
+
+}
+input#sendMessage{
+    position:relative;
+    left:20%;
+    top:6px;
+    border:1px solid white;
+    width: 500px;
+    height:20px;
+}
+
+#sendBtn{
+    position:relative;
+    left:19.7%;
+    top:6px;
+    height:30px;
+    
+    
+
+}
