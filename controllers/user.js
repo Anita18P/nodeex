@@ -11,11 +11,12 @@ exports.postUserDetails=async (req,res,next)=>{
     const PhoneNumber=req.body.PhoneNumber;
     const Password=req.body.Password;
     const saltRound=10;
-    const user=User.findOne({
+    const user= await User.findOne({
         where:{
             Email:Email
         }
     })
+    console.log(user);
     if(user){
        return res.status(200).json({message:"user already exist please login"})
     }

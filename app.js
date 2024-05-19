@@ -8,7 +8,9 @@ const cors=require('cors');
 const bodyParser=require('body-parser');
 const sequelize=require('./util/database');
 const User=require('./models/users');
+const Message=require('./models/messages');
 const adminRoutes=require('./routes/users');
+const sendMessageRoutes=require('./routes/message');
 
 const app=express();
 app.use(cors({
@@ -23,11 +25,14 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')));
 app.use(adminRoutes);
+app.use(sendMessageRoutes);
 //  app.use((req,res)=>{
 //     console.log("foll is urlss");
 //     console.log('url',req.url);
 //     res.sendFile(path.join(__dirname,`public/${req.url}`));
 //  })
+User.hasMany(Message);
+Message.belongsTo(User);
  
 sequelize.sync({force:false}).then((result)=>{
     // https.createServer({key:privateKey,cert:certificate},app)
