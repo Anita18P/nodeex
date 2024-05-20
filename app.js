@@ -34,7 +34,7 @@ app.use(sendMessageRoutes);
 User.hasMany(Message);
 Message.belongsTo(User);
  
-sequelize.sync({force:false}).then((result)=>{
+sequelize.sync({force:true}).then((result)=>{
     // https.createServer({key:privateKey,cert:certificate},app)
     // .listen(process.env.PORT ||3000,()=>{
     //     console.log("app listening at 3000");

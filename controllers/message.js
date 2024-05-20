@@ -1,4 +1,5 @@
 const Message=require('../models/messages');
+const chatUser=require('../models/users');
 exports.postMessage=async(req,res)=>{
     console.log('in post message function');
     console.log(req.user);
@@ -11,5 +12,18 @@ exports.postMessage=async(req,res)=>{
         Messages:req.body.message,
         chatUserId:req.user.id
     })
-    res.status(201).json({user:userData,message:messageData});
+    messageData.dataValues.chatUser=req.user
+    res.status(201).json({message:messageData});
+}
+exports.getMessages=async(req,res)=>{
+   try{ const messages=await Message.findAll({
+    include: [{
+      model: chatUser
+    }]
+  });
+    res.status(200).json({Messages:messages});
+   }catch(error){
+    console.log(error);
+    res.status(500).json({error:error});
+   }
 }

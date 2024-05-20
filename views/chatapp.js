@@ -20,12 +20,26 @@ function handleSubmit(event){
         console.log(error);
     })
 }
+window.addEventListener('DOMContentLoaded',()=>{
+    const token=localStorage.getItem('token');
+    axios.get("http://localhost:3000/get-messages",{headers:{
+        "Authorization":token
+}})
+    .then(response=>{
+        console.log(response);
+        response.data.Messages.forEach(element => {
+            showMessageOnScreen(element);
+        });
+    }).catch(error=>{
+        console.log(error);
+    })
+})
 function showMessageOnScreen(MessageData){
     const table=document.getElementById('message-screen');
     console.log(table);
     const tbody=table.getElementsByTagName('tbody')[0];
     const row = document.createElement('tr');
       row.innerHTML = `
-               <td>You:${MessageData.Messages}</td>`
+               <td>${MessageData.chatUser.Name}:${MessageData.Messages}</td>`
                tbody.appendChild(row);       
 }
