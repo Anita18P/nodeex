@@ -1,5 +1,7 @@
 const Message=require('../models/messages');
 const chatUser=require('../models/users');
+const Op=require('sequelize');
+
 exports.postMessage=async(req,res)=>{
     console.log('in post message function');
     console.log(req.user);
@@ -27,3 +29,4 @@ exports.getMessages=async(req,res)=>{
     res.status(500).json({error:error});
    }
 }
+
