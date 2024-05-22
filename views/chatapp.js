@@ -15,35 +15,76 @@ function handleSubmit(event){
 }})
     .then(response=>{
         console.log(response);
+        updateLocalStorage(response.data.message);
         showMessageOnScreen(response.data.message);
     }).catch(error=>{
         console.log(error);
     })
 }
+function updateLocalStorage(messageInfo){
+    let messageArr2=JSON.parse(localStorage.getItem('message'));
+        console.log('messageArr2');
+        console.log(messageArr2);
+        if(messageArr2.length<10){
+            messageArr2.push(messageInfo);
+            localStorage.removeItem('message');
+            localStorage.setItem('message',JSON.stringify(messageArr2));
+
+        }else{
+            messageArr2.shift();
+            messageArr2.push(messageInfo);
+            localStorage.removeItem('message');
+            localStorage.setItem('message',JSON.stringify(messageArr2));
+
+        }
+
+}
 window.addEventListener('DOMContentLoaded',()=>{
+    console.log('in domcontentloader');
     const token=localStorage.getItem('token');
-    axios.get("http://localhost:3000/get-messages",{headers:{
+    console.log('localStorage.message');
+    console.log(localStorage.message);
+    if(!localStorage.message){
+        console.log('in if part');
+     axios.get("http://localhost:3000/get-messages",{headers:{
         "Authorization":token
 }})
     .then(response=>{
         console.log(response);
-        lastTimestamp=response.data.Messages[response.data.Messages.length-1].createdAt;
-        response.data.Messages.forEach(element => {
+        let MessageArr1=new Array();
+        response.data.Messages.forEach((element,index) => {
+            console.log(element);
+            MessageArr1.push(element);
             showMessageOnScreen(element);
+
         });
+        localStorage.setItem('message',JSON.stringify(MessageArr1));
+  
     }).catch(error=>{
         console.log(error);
     })
+}else{
+    console.log('in else part');
+    let messageArr2=localStorage.getItem('message');
+     console.log('messageArr2');
+     console.log(JSON.parse(messageArr2));
+     JSON.parse(messageArr2).forEach(element=>{
+           showMessageOnScreen(element);
+     })
+}
 })
 const fetchData = async () => {
+    console.log('in fect Api');
+    let messageArr1=JSON.parse(localStorage.getItem('message'));
+    messageId=messageArr1[messageArr1.length-1].id;
     try {
-       const response = await axios.get('http://localhost:3000/get-messages',{headers:{
+       const response = await axios.get(`http://localhost:3000/get-messages?messageId=${messageId}`,{headers:{
         "Authorization":token
 }}); 
-const table=document.getElementById('message-screen');
-const tbody=table.getElementsByTagName('tbody')[0];
-      tbody.replaceChildren();
-        for(var i=0;i<response.data.Messages.length;i++){
+console.log('fetch response');
+console.log(response);
+    for(var i=0;i<response.data.Messages.length;i++){
+           updateLocalStorage(response.data.Messages[i]);
             showMessageOnScreen(response.data.Messages[i]);
         }
         
@@ -53,11 +94,10 @@ const tbody=table.getElementsByTagName('tbody')[0];
   };
   
   // Call the API every 1 second
-  const interval = setInterval(fetchData, 10000);
+ const interval = setInterval(fetchData, 10000);
 
 function showMessageOnScreen(MessageData){
     const table=document.getElementById('message-screen');
-    console.log(table);
     const tbody=table.getElementsByTagName('tbody')[0];
     const row = document.createElement('tr');
       row.innerHTML = `

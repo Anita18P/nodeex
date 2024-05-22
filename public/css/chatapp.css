@@ -9,6 +9,11 @@
     left:20%;
     width:700px;
 }
+table.tr{
+    line-height: 30px;
+    min-height:20px;
+    height:25px;
+}
 footer{
     position:absolute;
     top:92%;
@@ -39,7 +44,4 @@ input#sendMessage{
     left:19.7%;
     top:6px;
     height:30px;
-    
-    
-
 }
