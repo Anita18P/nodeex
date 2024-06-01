@@ -1,11 +1,11 @@
 const express = require('express');
+const router=express.Router();
 
 const messagecontrollers=require('../controllers/message');
 const userAuthentication=require('../middleware/auth');
-const router=express.Router();
-
-router.get('/get-messages',userAuthentication.authenticate,messagecontrollers.getMessages)
-router.post('/send-message',userAuthentication.authenticate,messagecontrollers.postMessage);
+const groupAuthentication=require('../middleware/gauth');
+router.get('/get-messages',userAuthentication.authenticate,groupAuthentication.groupAuthenticate,messagecontrollers.getMessages)
+router.post('/send-message',userAuthentication.authenticate,groupAuthentication.groupAuthenticate,messagecontrollers.postMessage);
 
 
 

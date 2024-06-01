@@ -1,5 +1,6 @@
 const jwt=require('jsonwebtoken');
 const User=require('../models/users');
+const Group=require('../models/Group');
 //const token_secret=process.env.TOKEN_SECRET;
 const authenticate=(req,res,next)=>{
     try{
@@ -10,14 +11,21 @@ const authenticate=(req,res,next)=>{
         const user=jwt.verify(token,'secretKey');
         User.findByPk(user.userId)
         .then(user=>{
+            console.log(user);
             req.user=user;
             next();
-        })
-    }catch(error){
-        console.log(error);
-        return res.status(401).json({success:false});
-    }
+        });
+   
+    // Group.findAll()
+    // .then((groups)=>{
+    //     req.group=groups;
+    //     next();
+    // })
+}catch(error){
+    console.log(error);
+    return res.status(401).json({success:false});
 }
- module.exports={
+};
+module.exports={
     authenticate
- };
+    };

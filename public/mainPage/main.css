@@ -1,0 +1,36 @@
+.navbar{
+    position:absolute;
+    background-color: aqua;
+    width:700px;
+    height:50px;
+    left:20%;
+    padding-left:10px;
+    margin:10px;
+  
+}
+#header{
+    display:inline;
+    position:absolute;
+    top:10px;
+
+}
+#CreateGroup{
+    position:absolute;
+    top:10px;
+    left:550px; 
+}
+#notifications{
+    position:absolute;
+    top:10px;
+    left:440px;
+}
+.main{
+    position:absolute;
+    background-color: antiquewhite;
+    top:20%;
+    left:20%;
+    margin:10px;
+    padding:10px;
+    width:700px;
+    height:800px;
+}

@@ -1,6 +1,7 @@
 const User=require('../models/users');
 const sequelize = require('../util/database');
 const {Sequelize,Op}=require('sequelize');
+const Notification=require('../models/notifications');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
  
@@ -80,3 +81,32 @@ exports.userLogin=async (req,res,next)=>{
     res.status(500).json({message:error,success:false});
   }
 };
+exports.getUser=async(req,res)=>{
+    console.log('i m in get user route');
+   try{ console.log(req.params);
+    const PhoneNumber=req.params.PhoneNumber;
+    
+    const userData=await User.findAll({
+       where:{ PhoneNumber:PhoneNumber
+       }
+    })
+    console.log('userData');
+    console.log(userData[0].id);
+    console.log(req.group);
+    if(userData){
+        Notification.create({
+            link:req.group.name,
+            userId:userData[0].id,
+            chatUserId:req.user.id,
+            GroupId:req.group.id
+        })
+        
+
+        res.status(200).json({message:"notification sent to user"});
+    }
+    
+}catch(error){
+    console.log(error);
+    res.status(500).json({error:error,message:"user does not exist"});
+}
+}
