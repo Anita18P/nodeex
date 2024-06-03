@@ -126,7 +126,7 @@ else{
         else{
             if(MemberData.Admin==true){
                 row.innerHTML = `
-                <td>${MemberData.memberName} <span class="spanAdmin">>Admin</span></td>`
+                <td>${MemberData.memberName} <span class="spanAdmin">Admin</span></td>`
                 tbody.appendChild(row);
             }
             else{

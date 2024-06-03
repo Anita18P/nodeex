@@ -1,0 +1,123 @@
+#navbar{
+    position:absolute;
+    top:1%;
+    display:block;
+    width:800px;
+    height:70px;
+    left:15%;
+    background-color:rgb(81, 107, 180); 
+    border:1px solid black;
+}
+div#headerDiv{
+   display: inline-block;
+   position:absolute;
+   background-color: rgb(205, 208, 218);
+   width:150px;
+   height:40px; 
+   left:1%;
+   top:30%;
+   border:1px solid rgb(189, 189, 253);
+   border-radius:6px;
+   margin:2px;
+   padding:2px;
+
+}
+div#groupNameDiv{
+   display: inline-block;
+   position:absolute;
+   background-color: rgb(191, 240, 240);
+   width:600px;
+   height:40px; 
+   left:20%;
+   top:30%;
+   border:1px solid rgb(189, 189, 253);
+   border-radius:6px;
+   margin:2px;
+   padding:2px;
+  
+}
+#header{
+    position:absolute;
+    display:inline;
+    left:1%;
+    top:1px;
+    color:rgb(21, 22, 22);
+}
+
+#groupName{
+    position:relative;
+    left:20%;
+    top:1%;
+    display: inline;
+    
+
+}
+#memberBtn{
+    position:relative;
+    left:58%;
+    top:1%;
+    display: inline;
+
+}
+.main{
+    position:absolute;
+    top:20%;
+    left:20%;
+    width:700px;
+}
+table.tr{
+    line-height: 30px;
+    min-height:20px;
+    height:25px;
+}
+footer{
+    position:absolute;
+    top:92%;
+    margin:-5px;
+}
+button.AdminBtn {
+    position:relative;
+    left:68%;
+}
+button.removeBtn{
+    position:relative;
+    left:70%;
+}
+span{
+    position:relative;
+    left:85%;
+    color:green;
+
+}
+.message{
+    position:relative;
+    background-color: rgb(47, 77, 162);
+    width:850px;
+    height:45px;
+    left:20%;
+    top:90%;
+    border-radius:5px;
+    /* align-items: center; */
+
+}
+input#sendMessage{
+    position:relative;
+    left:15%;
+    top:6px;
+    border:1px solid white;
+    width: 500px;
+    height:20px;
+}
+
+#sendBtn{
+    position:relative;
+    left:15%;
+    top:6px;
+    height:30px;
+}
+#Invite{
+    position:relative;
+    left:15%;
+    top:6px;
+    height:30px;
+}

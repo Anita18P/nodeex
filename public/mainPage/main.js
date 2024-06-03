@@ -71,7 +71,7 @@ function getgroup(data){
         console.log(response);
         localStorage.setItem('groupData',JSON.stringify(response.data.groupData[0]));
         localStorage.setItem('grouptoken',response.data.grouptoken);
-       window.location.href="../chatapp.html";
+       window.location.href="../chatappPage/chatapp.html";
     }).catch(error=>{
         console.log(error);
     })
