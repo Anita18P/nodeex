@@ -10,8 +10,12 @@ const { noDoubleNestedGroup } = require('sequelize/lib/utils/deprecations');
 exports.postGroup=async(req,res)=>{
     console.log('I m in post Group');
     const t= await sequelize.transaction();
+
+    console.log('req.user');
     console.log(req.user);
+    console.log('req.group');
     console.log(req.group);
+    console.log('req.body');
     console.log(req.body);
     try{
     const GroupData=await Groups.create({
@@ -24,9 +28,17 @@ exports.postGroup=async(req,res)=>{
         memberName:req.user.Name,
         GroupId:GroupData.id,
         chatUserId:req.user.id,
+        Admin:true,
         transaction:t
 
     })
+    console.log('GroupData');
+    console.log(GroupData);
+    console.log('GroupData.name');
+    console.log(GroupData.name);
+    MemberData.dataValues.Group={
+        name:GroupData.name};
+    
     t.commit();
     res.status(200).json({GroupData:GroupData ,MemberData:MemberData,Success:"Group created Successfully"});
 }catch(error){

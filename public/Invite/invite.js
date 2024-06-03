@@ -12,6 +12,7 @@ function handleSubmit(event){
         Email:Email,
     }
     console.log(obj);
+    //get user details if it exist post notifications
     axios.get(`http://localhost:3000/get-user/${PhoneNumber}`,{
         "headers":{"Authorization":token,
         "GroupAuthorization":grouptoken
@@ -19,17 +20,10 @@ function handleSubmit(event){
     })
     .then(response=>{
         console.log(response);
-        const obj={
-            data:response.data
-        }
-        axios.post("http://localhost:3000/invite",obj,{
-            "headers":{"Authorization":token,
-            "GroupAuthorization":grouptoken
-            }})
-    }).then(response=>{
-        console.log(response);
+    
     }).catch(error=>{
         console.log(error);
+        window.alert(`${error.response.data.message}`);
     })
 
 

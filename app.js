@@ -16,12 +16,12 @@ const adminRoutes=require('./routes/users');
 const sendMessageRoutes=require('./routes/message');
 const groupRoutes=require('./routes/GroupRoute');
 const notifiRoutes=require('./routes/NotifiRoutes')
-
+const memberRoutes=require('./routes/memberRoutes');
 
 const app=express();
 app.use(cors({
     origin:"http://127.0.0.1:5500",
-    methods:['GET','POST'],
+    methods:"*",
     credentials:true
 }));
 
@@ -31,6 +31,7 @@ app.use(adminRoutes);
 app.use(sendMessageRoutes);
 app.use(groupRoutes);
 app.use(notifiRoutes);
+app.use(memberRoutes);
  app.use((req,res)=>{
     console.log("foll is urlss");
     console.log('url',req.url);

@@ -13,7 +13,7 @@ create.addEventListener("click",function(){
         headers:{Authorization :token}
     }).then((response)=>{
         console.log(response);
-        localStorage.setItem('groupData',JSON.stringify(response.data.GroupData));
-        window.location.href='../chatapp.html';
+        localStorage.setItem('groupData',JSON.stringify(response.data.MemberData));
+       window.location.href='../chatapp.html';
     })
 })

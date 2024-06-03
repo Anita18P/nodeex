@@ -34,7 +34,7 @@ exports.joingroup=async(req,res)=>{
 })
 console.log('data');
 console.log(data.length);
-  if(!data){
+  if(data.length){
     
     return res.status(200).json({message:"You are already a member"});
 

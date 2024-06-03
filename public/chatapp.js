@@ -25,7 +25,7 @@ function handleSubmit(event){
     })
 }
 function updateLocalStorage(messageInfo){
-    let groupName=JSON.parse(localStorage.getItem('groupData')).name;
+    let groupName=JSON.parse(localStorage.getItem('groupData')).Group.name;
     console.log(groupName);
     let messageArr2=JSON.parse(localStorage.getItem(`${groupName}`));
         console.log('messageArr2');
@@ -46,6 +46,8 @@ function updateLocalStorage(messageInfo){
 
 }
 window.addEventListener('DOMContentLoaded',()=>{
+     
+     console.log(groupData);
      console.log(groupData.Group.name);
      const groupName=document.getElementById('groupName');
      groupName.innerHTML=groupData.Group.name;
@@ -66,36 +68,45 @@ window.addEventListener('DOMContentLoaded',()=>{
     //  })
     console.log('in domcontentloader');
     const token=localStorage.getItem('token');
-    console.log(localStorage.getItem(groupData.Group.name));
-    if(!localStorage.getItem(groupData.Group.name)){
-        console.log('in if part');
-     axios.get("http://localhost:3000/get-messages",{headers:{
-        "Authorization":token,
-           "GroupAuthorization":grouptoken
-}})
-    .then(response=>{
-        console.log(response);
-        let MessageArr1=new Array();
-        response.data.Messages.forEach((element) => {
-            console.log(element);
-            MessageArr1.push(element);
-            showMessageOnScreen(element);
-
-        });
-        localStorage.setItem(`${groupData.Group.name}`,JSON.stringify(MessageArr1));
-  
-    }).catch(error=>{
-        console.log(error);
-    })
-}else{
-    console.log('in else part');
-    let messageArr2=localStorage.getItem(`${groupData.Group.name}`);
-     console.log('messageArr2');
-     console.log(JSON.parse(messageArr2));
-     JSON.parse(messageArr2).forEach(element=>{
-           showMessageOnScreen(element);
-     })
-}
+    
+        console.log(localStorage.getItem(groupData.Group.name));
+        const messageArr1=JSON.parse(localStorage.getItem(groupData.Group.name)||null);
+        console.log('messageArr1');
+        console.log(messageArr1);
+        if(!messageArr1){
+            console.log('in if part');
+         axios.get("http://localhost:3000/get-messages",{headers:{
+            "Authorization":token,
+               "GroupAuthorization":grouptoken
+    }})
+        .then(response=>{
+            console.log(response);
+            let MessageArr1=new Array();
+            response.data.Messages.forEach((element) => {
+                console.log(element);
+                MessageArr1.push(element);
+                showMessageOnScreen(element);
+    
+            });
+            localStorage.setItem(`${groupData.Group.name}`,JSON.stringify(MessageArr1));
+      
+        }).catch(error=>{
+            console.log(error);
+        })
+    }else{
+        console.log('in else part');
+        let messageArr2=localStorage.getItem(`${groupData.Group.name}`);
+         console.log('messageArr2');
+         console.log(JSON.parse(messageArr2));
+         JSON.parse(messageArr2).forEach(element=>{
+            updateLocalStorage(element);
+               showMessageOnScreen(element);
+         })
+    }
+    
+    
+    
+    
 })
 const fetchData = async () => {
     console.log('in fetch Api');
@@ -133,4 +144,9 @@ const Invite=document.getElementById("Invite");
 
 Invite.addEventListener("click",function(){
   window.location.href='../Invite/invite.html'
+})
+const Members=document.getElementById("memberBtn");
+Members.addEventListener("click",function(){
+    console.log('i m in members click function');
+    window.location.href="memberPage/member.html";
 })

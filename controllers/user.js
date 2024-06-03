@@ -91,6 +91,8 @@ exports.getUser=async(req,res)=>{
        }
     })
     console.log('userData');
+    console.log('userData');
+    console.log(userData);
     console.log(userData[0].id);
     console.log(req.group);
     if(userData){
