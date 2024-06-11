@@ -1,6 +1,11 @@
 const token=localStorage.getItem('token');
 const grouptoken=localStorage.getItem('grouptoken');
 const groupData=JSON.parse(localStorage.getItem('groupData'));
+// const {socket}=require('socket.io');
+const socket = io("http://localhost:3000");
+console.log(socket);
+console.log(socket.join);
+console.log(socket.emit);
 let lastTimestamp=null;
 function handleSubmit(event){
     event.preventDefault();
@@ -18,6 +23,7 @@ function handleSubmit(event){
 }})
     .then(response=>{
         console.log(response);
+        socket.emit("newMessage",response.data.message); 
        updateLocalStorage(response.data.message);
         showMessageOnScreen(response.data.message);
     }).catch(error=>{
@@ -46,34 +52,24 @@ function updateLocalStorage(messageInfo){
 
 }
 window.addEventListener('DOMContentLoaded',()=>{
-     
+    // io.socketsjoin(groupData.Group.name,()=>{
+    //     console.log(`in ${groupData.Group.name} group `);
+    // });
      console.log(groupData);
      console.log(groupData.Group.name);
      const groupName=document.getElementById('groupName');
      groupName.innerHTML=groupData.Group.name;
-//      axios.get("http://localhost:3000/get-messages",messageObj,{headers:{
-//         "Authorization":token,
-//         "GroupAuthorization":grouptoken
-// }})
-    // axios.get("http://localhost:3000/get-messages",{
-    //     headers:{
-    //         "Authorization":token,
-    //         "GroupAuthorization":grouptoken
-
-    //     }
-    //  }).then(response=>{
-    //     console.log(response);
-    //  }).catch(error=>{
-    //     console.log(error);
-    //  })
     console.log('in domcontentloader');
+    socket.on("connect", () => {
+        console.log("Connected to Socket.io server");
+      });
+
     const token=localStorage.getItem('token');
-    
         console.log(localStorage.getItem(groupData.Group.name));
         const messageArr1=JSON.parse(localStorage.getItem(groupData.Group.name)||null);
         console.log('messageArr1');
         console.log(messageArr1);
-        if(!messageArr1){
+        if(messageArr1==null){
             console.log('in if part');
          axios.get("http://localhost:3000/get-messages",{headers:{
             "Authorization":token,
@@ -104,7 +100,10 @@ window.addEventListener('DOMContentLoaded',()=>{
          })
     }
     
-    
+    socket.on('newMessage', (message) => {
+        console.log('New message received:', message);
+        showMessageOnScreen(message);
+      });
     
     
 })
@@ -128,6 +127,7 @@ console.log(response);
       console.error('Error fetching data:', error);
     }
   };
+  
   
   // Call the API every 1 second
  //const interval = setInterval(fetchData, 10000);

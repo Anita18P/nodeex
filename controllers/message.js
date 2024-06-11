@@ -4,6 +4,7 @@ const Sequelize=require('sequelize');
 const Group=require('../models/Group')
 const Member=require('../models/member');
 
+
 exports.postMessage=async(req,res)=>{
     console.log('in post message function');
     console.log(req.user);
@@ -21,7 +22,11 @@ exports.postMessage=async(req,res)=>{
        
     })
     
-    messageData.dataValues.chatUser=req.user
+    messageData.dataValues.chatUser=req.user;
+    //console.log('req.io');
+   // console.log(req.io);
+  
+    req.io.emit('newMessage',messageData);
     res.status(201).json({message:messageData});
 }
 exports.getMessages=async(req,res)=>{

@@ -1,11 +1,13 @@
 const token=localStorage.getItem('token');
+const socket=io("http://localhost:3000");
 window.addEventListener('DOMContentLoaded',()=>{
-    
+   
     axios.get("http://localhost:3000/get-groups",{headers:{
         "Authorization":token}})
     .then(response=>{
         console.log('response of get groups');
         console.log(response);
+        socket.emit('addNewUser',response.data.groupData[0].chatUserId);
         response.data.groupData.forEach(element=>{
         showMessageOnScreen(element);
         })
