@@ -100,6 +100,14 @@ span{
     /* align-items: center; */
 
 }
+input#fileInput{
+    position:relative;
+    left:-57%;
+    top:8px;
+    border:1px solid white;
+    width: 100px;
+    height:25px;
+}
 input#sendMessage{
     position:relative;
     left:15%;
@@ -111,13 +119,13 @@ input#sendMessage{
 
 #sendBtn{
     position:relative;
-    left:15%;
+    left:3%;
     top:6px;
     height:30px;
 }
 #Invite{
     position:relative;
-    left:15%;
+    left:3%;
     top:6px;
     height:30px;
 }

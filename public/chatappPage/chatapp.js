@@ -11,13 +11,32 @@ function handleSubmit(event){
     event.preventDefault();
     console.log('hello i m in handleSubmit');
     console.log(token);
-    const message=event.target.message.value;
+    
+    const messageContent=document.getElementById('sendMessage').value.trim(); 
+    const fileInput = document.getElementById("fileInput").files[0];
+    console.log('fileInput');
+    console.log(fileInput);
     document.getElementById('sendMessage').value="";
+    if (!messageContent && !fileInput) {
+        alert("Please enter a message or select a file to send.");
+        return;
+      }
     const messageObj={
-        message:message
+        message:messageContent
     }
-    console.log(message);
-    axios.post("http://localhost:3000/send-message",messageObj,{headers:{
+    const formData = new FormData();
+    console.log('before appending formData');
+    console.log(formData);
+    formData.append('message', messageContent);
+    formData.append("groupId", "1");
+    if (fileInput) {
+      formData.append("file", fileInput);
+    }
+  
+    console.log(formData);
+   
+    axios.post("http://localhost:3000/send-message",formData,{headers:{
+        "Content-Type": "multipart/form-data",
         "Authorization":token,
         "GroupAuthorization":grouptoken
 }})
@@ -138,7 +157,34 @@ function showMessageOnScreen(MessageData){
     const row = document.createElement('tr');
       row.innerHTML = `
                <td>${MessageData.chatUser.Name}:${MessageData.Messages}</td>`
-               tbody.appendChild(row);       
+            if(MessageData.fileUrl) {
+                
+                    const fileExtension =MessageData.fileUrl.split(".").pop().toLowerCase();
+                if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
+                      const img = document.createElement("img");
+                      img.src = MessageData.fileUrl;
+                      img.alt = MessageData.content;
+                      img.width = 320; // Set width as required
+                      img.height = 240; // Set height as required
+                      img.classList.add("mt-2"); // Adding some margin-top for spacing
+                      row.appendChild(img);
+                    } else if (["mp4", "webm"].includes(fileExtension)) {
+                      const video = document.createElement("video");
+                      video.width = 320; // Set width as required
+                      video.height = 240; // Set height as required
+                      video.controls = true;
+                      const source = document.createElement("source");
+                      source.src = MessageData.fileUrl;
+                      source.type = `video/${fileExtension}`;
+                      video.appendChild(source);
+                      video.classList.add("mt-2"); // Adding some margin-top for spacing
+                      row.appendChild(video);
+                    }
+                
+            }  
+               tbody.appendChild(row);
+               
+               table.scrollTop = table.scrollHeight; // Scroll to the bottom
 }
 const Invite=document.getElementById("Invite");
 
