@@ -5,6 +5,7 @@ const dotenv=require('dotenv');
 dotenv.config();
 const app=express();
 const http=require('http');
+const startCronJob=require('./controllers/Archive');
 
 const socketIo=require('socket.io');
 const server=http.createServer(app);
@@ -22,7 +23,8 @@ const sendMessageRoutes=require('./routes/message');
 const groupRoutes=require('./routes/GroupRoute');
 const notifiRoutes=require('./routes/NotifiRoutes')
 const memberRoutes=require('./routes/memberRoutes');
-
+const { CronJob } = require("cron");
+const ArchivedChats=require('./models/ArchiveChats');
 
 app.use(cors({
     origin:"http://127.0.0.1:5500",
@@ -82,7 +84,8 @@ User.hasMany(Notifications);
 Notifications.belongsTo(User);
 Groups.hasMany(Notifications);
 Notifications.belongsTo(Groups);
-
+ArchivedChats.belongsTo(User);
+ArchivedChats.belongsTo(Groups);
 
 
 
@@ -93,6 +96,7 @@ sequelize.sync({force:false}).then((result)=>{
     //     console.log("app listening at 3000");
     //     console.log("***********************");
     // });
+    startCronJob();
     server.listen(process.env.PORT ||3000,()=>{
         console.log("app listening at 3000");
         console.log("***********************");

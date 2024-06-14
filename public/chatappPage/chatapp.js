@@ -85,14 +85,15 @@ window.addEventListener('DOMContentLoaded',()=>{
 
     const token=localStorage.getItem('token');
         console.log(localStorage.getItem(groupData.Group.name));
-        const messageArr1=JSON.parse(localStorage.getItem(groupData.Group.name)||null);
+        const messageArr1=JSON.parse(localStorage.getItem(groupData.Group.name))||null;
         console.log('messageArr1');
         console.log(messageArr1);
-        if(messageArr1==null){
+        if(messageArr1.length){
+            const messageId=messageArr1[messageArr1.length-1].id;
             console.log('in if part');
-         axios.get("http://localhost:3000/get-messages",{headers:{
+         axios.get(`http://localhost:3000/get-messages??messageId=${messageId}`,{headers:{
             "Authorization":token,
-               "GroupAuthorization":grouptoken
+            "GroupAuthorization":grouptoken
     }})
         .then(response=>{
             console.log(response);

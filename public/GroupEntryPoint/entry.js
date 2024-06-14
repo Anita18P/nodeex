@@ -14,6 +14,6 @@ create.addEventListener("click",function(){
     }).then((response)=>{
         console.log(response);
         localStorage.setItem('groupData',JSON.stringify(response.data.MemberData));
-       window.location.href='../chatapp.html';
+       window.location.href='../chatappPage/chatapp.html';
     })
 })
